@@ -1,2 +1,2 @@
-# alu-machine_learning
-ML Specialization
+# Math for Machine learning
+We are learning mathematics for machine learning in order to strengthen our calculus skills in data analysis.
