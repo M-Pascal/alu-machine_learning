@@ -1,9 +1,20 @@
 #!/usr/bin/env python3
-"""ABS"""
+"""This module provides functions for slicing arrays or lists in specific ways.
+   The main functionality is to demonstrate how to slice like a 'ninja'.
+"""
 
 
 def np_slice(matrix, axes={}):
-    """abs"""
+    """Slices the array from the start index to the end index.
+
+    Parameters:
+    array (np.ndarray or list): The array or list to slice.
+    start (int): The starting index.
+    end (int): The ending index.
+
+    Returns:
+    np.ndarray or list: The sliced array.
+    """
     # Create a list of slice objects, one for each dimension of the matrix
     slices = [slice(None)] * matrix.ndim
 
