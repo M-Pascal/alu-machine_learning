@@ -12,8 +12,7 @@ def cat_matrices(mat1, mat2, axis=0):
     axis (int): The axis along which to concatenate (default is 0)
 
     Returns:
-    list: 
-    A new matrix containing the concatenation of mat1 and mat2
+    list: A new matrix containing the concatenation of mat1 and mat2
     None: If matrices cannot be concatenated
 
     """
@@ -59,3 +58,4 @@ def cat_matrices(mat1, mat2, axis=0):
         return None
 
     return concat_recursive(mat1, mat2, axis, 0)
+    
