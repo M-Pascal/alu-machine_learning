@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-# Mode that contain method determines the shape of the matrix.
+"""Mode contains method determine the shape of a given matrix  """
 
-# Function that returns the shape of the matrix
 def matrix_shape(matrix):
+    """Function that return the shape of matrix, all dimensions"""
     shape = []
     while isinstance(matrix, list):
         shape.append((len(matrix)))
