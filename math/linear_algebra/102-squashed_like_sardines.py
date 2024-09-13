@@ -46,15 +46,15 @@ def cat_matrices(mat1, mat2, axis=0):
             ]
         return m1 + m2
 
-    shape1, shape2 = get_shape(mat1), get_shape(mat2)
+    shap1, shap2 = get_shape(mat1), get_shape(mat2)
 
-    if len(shape1) != len(shape2):
+    if len(shap1) != len(shap2):
         return None
 
-    if axis < 0 or axis >= len(shape1):
+    if axis < 0 or axis >= len(shap1):
         return None
 
-    if shape1[:axis] != shape2[:axis] or shape1[axis + 1:] !=shape2[axis + 1:]:
+    if shap1[:axis] != shap2[:axis] or shap1[axis + 1:] != shap2[axis + 1:]:
         return None
 
     return concat_recursive(mat1, mat2, axis, 0)
