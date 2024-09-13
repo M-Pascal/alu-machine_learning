@@ -1,14 +1,9 @@
 #!/usr/bin/env python3
-
-
 """ABS"""
 
 
 def np_slice(matrix, axes={}):
-    
     """abs"""
-
-
     # Create a list of slice objects, one for each dimension of the matrix
     slices = [slice(None)] * matrix.ndim
     
