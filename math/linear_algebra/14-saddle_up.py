@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Function that performs matrix multiplication """
-import numpy as np # Importing numpy as np module.
+import numpy as np  # Importing numpy as np module.
 
 
 def np_matmul(mat1, mat2):
