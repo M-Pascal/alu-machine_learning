@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Function that concatenates 2 matrices along a specific axis"""
-import numpy as np  # Importing numpy as np module
+import numpy as np  # Importing numpy as np module.
 
 
 def np_cat(mat1, mat2, axis=0):
