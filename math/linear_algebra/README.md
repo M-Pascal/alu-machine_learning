@@ -1,0 +1,1 @@
+Second week in ML, we are learning linear algebra which is much necessary to know more about numpy library(Which is imported as np).
