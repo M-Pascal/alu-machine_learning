@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" defines a function that calculates a summation """
+""" Defines a function that calculates a summation """
 
 
 def summation_i_squared(n):
