@@ -4,7 +4,7 @@
 - Series andCommon series
 - Derivative
 - Product rule
-- Chain rule?
+- Chain rule
 - Common derivative rules
 - Partial derivative
 - Indefinite & Definite & Double integral
