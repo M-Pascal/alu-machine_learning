@@ -41,7 +41,6 @@ class Binomial:
             - Use the specified values for `n` and `p`.
             - Raise a `ValueError` if `n` is not a positive integer.
             - Raise a `ValueError` if `p` is not between 0 and 1 (inclusive).
-            
         The attributes `n` and `p` are set according to the above logic.
         """
         if data is None:
