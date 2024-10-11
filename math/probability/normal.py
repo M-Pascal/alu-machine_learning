@@ -46,7 +46,7 @@ class Normal:
             stddev (float): The standard deviation of the distribution.
 
         Functionality:
-            - Initializes the mean and stddev instance attributes as 
+            - Initializes the mean and stddev instance attributes as
             float values.
             - If no data is provided:
                 - Uses the supplied mean and stddev values.
