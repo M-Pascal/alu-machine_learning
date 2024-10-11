@@ -8,7 +8,7 @@ class Normal:
 
     Constructor:
         __init__(self, data=None, mean=0.0, stddev=1.0):
-            Initializes the distribution with an 
+            Initializes the distribution with an
             optional dataset, mean, and standard deviation.
 
     Attributes:
@@ -21,7 +21,7 @@ class Normal:
         z_score(self, x):
             Computes the z-score for a given x value
             (how far x is from the mean in standard deviations).
-        
+
         x_value(self, z):
             Computes the x value for a given z-score
             (reverse of z_score calculation).
@@ -46,7 +46,8 @@ class Normal:
             stddev (float): The standard deviation of the distribution.
 
         Functionality:
-            - Initializes the mean and stddev instance attributes as float values.
+            - Initializes the mean and stddev instance attributes as 
+            float values.
             - If no data is provided:
                 - Uses the supplied mean and stddev values.
                 - Raises a ValueError if stddev is not a positive number.
