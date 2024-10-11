@@ -10,7 +10,7 @@ class Exponential:
         def __init__(self, data=None, lambtha=1.0):
             Initializes the class with an optional dataset
             and lambda (rate parameter).
-            
+
     Attributes:
         lambtha (float): The expected rate of occurrences
         within a given time period.
