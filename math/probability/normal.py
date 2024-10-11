@@ -8,24 +8,32 @@ class Normal:
 
     Constructor:
         __init__(self, data=None, mean=0.0, stddev=1.0):
-            Initializes the distribution with an optional dataset, mean, and standard deviation.
+            Initializes the distribution with an 
+            optional dataset, mean, and standard deviation.
 
     Attributes:
-        mean (float): Represents the mean (average) of the normal distribution.
-        stddev (float): Represents the standard deviation, a measure of how spread out the distribution is.
+        mean (float): Represents the mean (average) of
+        the normal distribution.
+        stddev (float): Represents the standard deviation,
+        a measure of how spread out the distribution is.
 
     Methods:
         z_score(self, x):
-            Computes the z-score for a given x value (how far x is from the mean in standard deviations).
+            Computes the z-score for a given x value
+            (how far x is from the mean in standard deviations).
         
         x_value(self, z):
-            Computes the x value for a given z-score (reverse of z_score calculation).
+            Computes the x value for a given z-score
+            (reverse of z_score calculation).
 
         pdf(self, x):
-            Computes the Probability Density Function (PDF) value at a given x (how likely x is within the distribution).
+            Computes the Probability Density Function (PDF) value
+            at a given x (how likely x is within the distribution).
 
         cdf(self, x):
-            Computes the Cumulative Distribution Function (CDF) value at a given x (the probability that a random variable is less than or equal to x).
+            Computes the Cumulative Distribution Function (CDF) value
+            at a given x (the probability that a random variable
+            is less than or equal to x).
     """
 
     def __init__(self, data=None, mean=0., stddev=1.):
