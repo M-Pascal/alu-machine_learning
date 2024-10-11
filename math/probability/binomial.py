@@ -8,15 +8,18 @@ class Binomial:
 
     Constructor:
     def __init__(self, data=None, n=1, p=0.5):
-        Initializes the class with number of trials (n) and success probability (p).
+        Initializes the class with number of trials (n)
+        and success probability (p).
 
     Attributes:
     n (int): Number of Bernoulli trials.
     p (float): Probability of success for each trial.
 
     Methods:
-    pmf(k): Computes the Probability Mass Function (PMF) for a given number of successes (k).
-    cdf(k): Computes the Cumulative Distribution Function (CDF) for a given number of successes (k).
+    pmf(k): Computes the Probability Mass Function (PMF)
+    for a given number of successes (k).
+    cdf(k): Computes the Cumulative Distribution Function (CDF)
+    for a given number of successes (k).
     """
 
     def __init__(self, data=None, n=1, p=0.5):
@@ -30,7 +33,8 @@ class Binomial:
 
         Behavior:
         - If `data` is provided:
-            - Compute `n` and `p` based on the data (round `n` to the nearest integer).
+            - Compute `n` and `p` based on the data
+            (round `n` to the nearest integer).
             - Raise a `TypeError` if `data` is not a list.
             - Raise a `ValueError` if `data` has fewer than two elements.
         - If `data` is not provided:
