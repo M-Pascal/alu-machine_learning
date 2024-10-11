@@ -8,14 +8,18 @@ class Exponential:
 
     Constructor:
         def __init__(self, data=None, lambtha=1.0):
-            Initializes the class with an optional dataset and lambda (rate parameter).
+            Initializes the class with an optional dataset
+            and lambda (rate parameter).
             
     Attributes:
-        lambtha (float): The expected rate of occurrences within a given time period.
+        lambtha (float): The expected rate of occurrences
+        within a given time period.
 
     Methods:
-        pdf(x): Computes the Probability Density Function (PDF) for a specified time period.
-        cdf(x): Computes the Cumulative Distribution Function (CDF) for a specified time period.
+        pdf(x): Computes the Probability Density Function
+        (PDF) for a specified time period.
+        cdf(x): Computes the Cumulative Distribution Function
+        (CDF) for a specified time period.
     """
 
     def __init__(self, data=None, lambtha=1.):
@@ -23,8 +27,10 @@ class Exponential:
         Constructor for the class.
 
         Parameters:
-            data (list): A list of data points used to estimate the distribution.
-            lambtha (float): The expected rate of occurrences over a given time period.
+            - data (list): A list of data points used to estimate
+            the distribution.
+            - lambtha (float): The expected rate of occurrences
+            over a given time period.
 
         Behavior:
         - The instance attribute `lambtha` is set as a float.
