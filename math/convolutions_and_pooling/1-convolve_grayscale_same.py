@@ -3,6 +3,7 @@
 
 import numpy as np
 
+
 def convolve_grayscale_same(images, kernel):
     """
     Applies a 'same' convolution on grayscale images with zero-padding.
@@ -38,7 +39,7 @@ def convolve_grayscale_same(images, kernel):
         for j in range(w):
             # Extract the region of the padded image for convolution
             image_slice = images_padded[:, i:i + kh, j:j + kw]
-            
+
             # Apply convolution by element-wise multiplication and summation
             convolved[:, i, j] = np.sum(image_slice * kernel, axis=(1, 2))
 
