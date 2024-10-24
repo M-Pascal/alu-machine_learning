@@ -20,10 +20,14 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
             kh: Kernel height
             kw: Kernel width
         padding (str or tuple): 'same', 'valid', or (ph, pw) tuple
-            - 'same': Pads the image to maintain the same output dimensions as input.
-            - 'valid': No padding applied, resulting in smaller output dimensions.
-            - (ph, pw): Tuple specifying custom padding for height (ph) and width (pw).
-        stride (tuple): (sh, sw) strides for height and width during convolution
+            - 'same': Pads the image to maintain the same output
+            dimensions as input.
+            - 'valid': No padding applied, resulting in smaller
+            output dimensions.
+            - (ph, pw): Tuple specifying custom padding for
+            height (ph) and width (pw).
+        stride (tuple): (sh, sw) strides for height and
+        width during convolution
             - sh: Stride for the height
             - sw: Stride for the width
 
@@ -37,16 +41,17 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
 
     # Determine the padding based on the padding type
     if padding == 'same':
-        ph = int(((h - 1) * sh + kh - h) / 2)  # Padding for height
-        pw = int(((w - 1) * sw + kw - w) / 2)  # Padding for width
+        # Padding to keep the output the same size as the input
+        ph = max((sh * (h - 1) + kh - h) // 2, 0)  # Padding for height
+        pw = max((sw * (w - 1) + kw - w) // 2, 0)  # Padding for width
     elif padding == 'valid':
         ph, pw = 0, 0  # No padding for valid convolution
     else:
         ph, pw = padding  # Custom padding provided as tuple
 
     # Calculate the dimensions of the output after padding and strides
-    nh = int((h - kh + 2 * ph) / sh + 1)
-    nw = int((w - kw + 2 * pw) / sw + 1)
+    nh = (h + 2 * ph - kh) // sh + 1
+    nw = (w + 2 * pw - kw) // sw + 1
 
     # Initialize the output array for convolved images
     convolved = np.zeros((m, nh, nw))
