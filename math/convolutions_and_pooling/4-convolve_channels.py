@@ -15,7 +15,7 @@ def convolve_channels(images, kernel, padding='same', stride=(1, 1)):
             - h: Height of the images in pixels
             - w: Width of the images in pixels
             - c: Number of channels in the images
-        kernel (numpy.ndarray): Shape (kh, kw, c) 
+        kernel (numpy.ndarray): Shape (kh, kw, c)
         containing the kernel for the convolution
             - kh: Kernel height
             - kw: Kernel width
@@ -39,7 +39,6 @@ def convolve_channels(images, kernel, padding='same', stride=(1, 1)):
     # Kernel height, width, and channels
     kh, kw, _ = kernel.shape
     sh, sw = stride # Stride for height (sh) and width (sw)
-
     # Determine padding values based on the type of padding specified
     if padding == 'same':
         # Padding calculation for 'same' to maintain output dimensions same as input
@@ -49,20 +48,19 @@ def convolve_channels(images, kernel, padding='same', stride=(1, 1)):
         # 'Valid' convolution means no padding
         ph, pw = 0, 0
     else:
-        # Custom padding provided as a tuple (ph: padding height, pw: padding width)
+        # Provided as a tuple (ph: padding height, pw: padding width)
         ph, pw = padding
 
-    # Calculate output dimensions after applying the kernel with padding and strides
+    # After applying the kernel with padding and strides
     nh = int(((h - kh + 2 * ph) / sh) + 1)  # Output height
     nw = int(((w - kw + 2 * pw) / sw) + 1)  # Output width
 
     # Initialize the output array to store the convolved images
     convolved = np.zeros((m, nh, nw))  # Output shape is (m, nh, nw)
 
-    # Apply padding to the images (only for height and width, channels are left unchanged)
+    # Apply padding to the img(only for height and width, channels are left unchanged)
     npad = ((0, 0), (ph, ph), (pw, pw), (0, 0))  # No padding for m and c dimensions
     imagesp = np.pad(images, pad_width=npad, mode='constant', constant_values=0)
-
 
     # Loop over each pixel of the output to compute the convolution
     for i in range(nh):
