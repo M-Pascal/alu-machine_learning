@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Function that performs convolution on images with multiple channels"""
+"""Performs convolution on images with multiple channels."""
 
 import numpy as np
 
@@ -13,8 +13,7 @@ def convolve_channels(images, kernel, padding='same', stride=(1, 1)):
             - h: Height of the images in pixels
             - w: Width of the images in pixels
             - c: Number of channels in the images
-        kernel (numpy.ndarray): Shape (kh, kw, c) containing the kernel
-        for the convolution
+        kernel (numpy.ndarray): Shape (kh, kw, c) containing the kernel for the convolution
             - kh: Kernel height
             - kw: Kernel width
             - c: Number of channels (must match the number of image channels)
@@ -27,47 +26,46 @@ def convolve_channels(images, kernel, padding='same', stride=(1, 1)):
             - sw: Stride along width
 
     Returns:
-        numpy.ndarray: The convolved images after applying the kernel.
+        numpy.ndarray: Convolved images after applying the kernel
     """
-    
-    # Extract image and kernel dimensions
-    m, h, w, c = images.shape
-    kh, kw, _ = kernel.shape  # Kernel should have the same channels as images
-    sh, sw = stride
 
-    # Determine padding values
+    # Extract image and kernel dimensions
+    m, h, w, c = images.shape  # m: number of images, h: height, w: width, c: channels
+    kh, kw, _ = kernel.shape  # Kernel height, width, and channels
+    sh, sw = stride  # Stride for height (sh) and width (sw)
+
+    # Determine padding values based on the type of padding specified
     if padding == 'same':
-        # 'same' padding ensures the output has the same size as the input
-        ph = ((h - 1) * sh + kh - h) // 2
-        pw = ((w - 1) * sw + kw - w) // 2
+        # Padding calculation for 'same' to maintain output dimensions same as input
+        ph = int(((h - 1) * sh + kh - h) / 2) + 1
+        pw = int(((w - 1) * sw + kw - w) / 2) + 1
     elif padding == 'valid':
-        # No padding for valid convolution
+        # 'Valid' convolution means no padding
         ph, pw = 0, 0
     else:
-        # Custom padding (tuple)
+        # Custom padding provided as a tuple (ph: padding height, pw: padding width)
         ph, pw = padding
 
-    # Compute output dimensions
-    nh = (h + 2 * ph - kh) // sh + 1  # Height of the output
-    nw = (w + 2 * pw - kw) // sw + 1  # Width of the output
+    # Calculate output dimensions after applying the kernel with padding and strides
+    nh = int(((h - kh + 2 * ph) / sh) + 1)  # Output height
+    nw = int(((w - kw + 2 * pw) / sw) + 1)  # Output width
 
-    # Initialize the output tensor to store the results
-    convolved = np.zeros((m, nh, nw))
+    # Initialize the output array to store the convolved images
+    convolved = np.zeros((m, nh, nw))  # Output shape is (m, nh, nw)
 
-    # Pad the images on height and width while preserving channels
-    images_padded = np.pad(images, pad_width=((0, 0), (ph, ph), (pw, pw), (0, 0)), 
-                           mode='constant', constant_values=0)
+    # Apply padding to the images (only for height and width, channels are left unchanged)
+    npad = ((0, 0), (ph, ph), (pw, pw), (0, 0))  # No padding for m and c dimensions
+    imagesp = np.pad(images, pad_width=npad, mode='constant', constant_values=0)
 
-    # Loop over the output dimensions (nh and nw)
+    # Loop over each pixel of the output to compute the convolution
     for i in range(nh):
+        x = i * sh  # Start index for height based on stride
         for j in range(nw):
-            # Define the region of the image to be convolved
-            x_start = i * sh  # Starting index along the height
-            y_start = j * sw  # Starting index along the width
-            # Extract a slice of the padded images corresponding to the kernel size
-            image_slice = images_padded[:, x_start:x_start + kh, y_start:y_start + kw, :]
-            # Perform the convolution by element-wise multiplication,
-            # summation across all channels
+            y = j * sw  # Start index for width based on stride
+            # Extract the sub-section of the padded image that matches the kernel size
+            image_slice = imagesp[:, x:x + kh, y:y + kw, :]
+            # Perform element-wise multiplication between the slice 
+            # and kernel, then sum over the spatial dimensions
             convolved[:, i, j] = np.sum(image_slice * kernel, axis=(1, 2, 3))
 
     return convolved
