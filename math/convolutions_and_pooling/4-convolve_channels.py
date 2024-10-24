@@ -38,7 +38,8 @@ def convolve_channels(images, kernel, padding='same', stride=(1, 1)):
     m, h, w, c = images.shape
     # Kernel height, width, and channels
     kh, kw, _ = kernel.shape
-    sh, sw = stride # Stride for height (sh) and width (sw)
+    # Stride for height (sh) and width (sw)
+    sh, sw = stride
     # Determine padding values based on the type of padding specified
     if padding == 'same':
         # Padding calc for 'same' to maintain output dimensions same as input
