@@ -21,7 +21,7 @@ def convolve_grayscale_valid(images, kernel):
     # Get dimensions of images and kernel
     m, h, w = images.shape
     kh, kw = kernel.shape
-    
+
     # Calculate output dimensions
     nh = h - kh + 1
     nw = w - kw + 1
@@ -32,7 +32,7 @@ def convolve_grayscale_valid(images, kernel):
         for j in range(nw):
             # Extract the section of the image to apply the kernel to
             image_slice = images[:, i:i + kh, j:j + kw]
-            
+
             # Apply convolution by element-wise multiplication and summation
             convolved[:, i, j] = np.sum(image_slice * kernel, axis=(1, 2))
 
