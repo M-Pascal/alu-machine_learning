@@ -6,7 +6,6 @@ import numpy as np
 def convolve_grayscale_valid(images, kernel):
     """
     Applies a valid convolution on grayscale images using a given kernel.
-    
     Args:
         images (numpy.ndarray): Shape (m, h, w) where
             m: Number of images
@@ -15,7 +14,6 @@ def convolve_grayscale_valid(images, kernel):
         kernel (numpy.ndarray): Shape (kh, kw), convolution kernel
             kh: Kernel height
             kw: Kernel width
-
     Returns:
         numpy.ndarray: Convolved images with reduced dimensions.
     """
@@ -29,8 +27,7 @@ def convolve_grayscale_valid(images, kernel):
 
     # Initialize output array for convolved images
     convolved = np.zeros((m, nh, nw))
-    
-    # Perform convolution with two nested loops (one for height and one for width)
+    # Perform convolution with two nested loops(one for h and one for w)
     for i in range(nh):
         for j in range(nw):
             # Extract the section of the image to apply the kernel to
