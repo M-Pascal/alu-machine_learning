@@ -26,6 +26,7 @@ def pool(images, kernel_shape, stride, mode='max'):
     Returns:
         output: `numpy.ndarray` containing the convolved images
     """
+
     c = images.shape[3]
     m, h, w = images.shape[0], images.shape[1], images.shape[2]
     kh, kw = kernel_shape[0], kernel_shape[1]
