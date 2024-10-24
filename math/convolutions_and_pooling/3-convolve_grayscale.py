@@ -66,9 +66,9 @@ def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
         x = i * sh  # Start position for height
         for j in range(nw):
             y = j * sw  # Start position for width
-            # Extract the portion of the padded image that matches the kernel size
+            # Extract the portion of the padded img that matches the kernel sz
             image_slice = images_padded[:, x:x + kh, y:y + kw]
-            # Perform element-wise multiplication btn 
+            # Perform element-wise multiplication btn
             # image slice and kernel, and sum the result
             convolved[:, i, j] = np.sum(image_slice * kernel, axis=(1, 2))
 
