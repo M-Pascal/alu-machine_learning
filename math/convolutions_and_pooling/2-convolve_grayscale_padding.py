@@ -3,6 +3,7 @@
 
 import numpy as np
 
+
 def convolve_grayscale_padding(images, kernel, padding):
     """
     Applies a convolution on grayscale images with custom padding.
@@ -35,7 +36,8 @@ def convolve_grayscale_padding(images, kernel, padding):
     convolved = np.zeros((m, nh, nw))
 
     # Apply zero-padding to the images
-    images_padded = np.pad(images, pad_width=((0, 0), (ph, ph), (pw, pw)), mode='constant', constant_values=0)
+    images_padded = np.pad(images, pad_width=((0, 0), (ph, ph), (pw, pw)),
+                           mode='constant', constant_values=0)
 
     # Perform convolution with two loops (height and width)
     for i in range(nh):
@@ -43,7 +45,8 @@ def convolve_grayscale_padding(images, kernel, padding):
             # Extract the region of the padded image for convolution
             image_slice = images_padded[:, i:i + kh, j:j + kw]
 
-            # Apply element-wise multiplication and summation to perform convolution
+            # Apply element-wise multiplication,
+            # summation to perform convolution
             convolved[:, i, j] = np.sum(image_slice * kernel, axis=(1, 2))
 
     return convolved
