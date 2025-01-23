@@ -98,3 +98,45 @@ class DeepNeuralNetwork:
         loss = -(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
         cost = np.mean(loss)
         return cost
+
+    def evaluate(self, X, Y):
+        """ Evaluate the neural network
+
+        Args:
+            X (numpy.array): Input array
+            Y (numpy.array): Actual values
+
+        Returns:
+            prediction, cost: return predictions and costs
+        """
+        self.forward_prop(X)
+        # get output of the neural network from the cache
+        output = self.cache.get("A" + str(self.L))
+        return np.where(output >= 0.5, 1, 0), self.cost(Y, output)
+
+    def gradient_descent(self, Y, cache, alpha=0.05):
+        """ Calculate one pass of gradient descent on the neural network
+
+        Args:
+            Y (numpy.array): Actual values
+            cache (dict): Dictionary containing all intermediary values of the
+                          network
+            alpha (float): learning rate
+        """
+        m = Y.shape[1]
+        
+        for i in range(self.L, 0, -1):
+
+            A_prev = cache["A" + str(i - 1)]
+            A = cache["A" + str(i)]
+            W = self.__weights["W" + str(i)]
+
+            if i == self.__L:
+                dz = A - Y
+            else:
+                dz = da * (A * (1 - A))
+            db = dz.mean(axis=1, keepdims=True)
+            dw = np.matmul(dz, A_prev.T) / m
+            da = np.matmul(W.T, dz)
+            self.__weights['W' + str(i)] -= (alpha * dw)
+            self.__weights['b' + str(i)] -= (alpha * db)

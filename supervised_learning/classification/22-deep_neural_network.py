@@ -98,3 +98,78 @@ class DeepNeuralNetwork:
         loss = -(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
         cost = np.mean(loss)
         return cost
+
+    def evaluate(self, X, Y):
+        """ Evaluate the neural network
+
+        Args:
+            X (numpy.array): Input array
+            Y (numpy.array): Actual values
+
+        Returns:
+            prediction, cost: return predictions and costs
+        """
+        self.forward_prop(X)
+        # get output of the neural network from the cache
+        output = self.cache.get("A" + str(self.L))
+        return np.where(output >= 0.5, 1, 0), self.cost(Y, output)
+
+    def gradient_descent(self, Y, cache, alpha=0.05):
+        """ Calculate one pass of gradient descent on the neural network
+
+        Args:
+            Y (numpy.array): Actual values
+            cache (dict): Dictionary containing all intermediary values of the
+                          network
+            alpha (float): learning rate
+        """
+        m = Y.shape[1]
+
+        for i in range(self.L, 0, -1):
+
+            A_prev = cache["A" + str(i - 1)]
+            A = cache["A" + str(i)]
+            W = self.__weights["W" + str(i)]
+
+            if i == self.__L:
+                dz = A - Y
+            else:
+                dz = da * (A * (1 - A))
+            db = dz.mean(axis=1, keepdims=True)
+            dw = np.matmul(dz, A_prev.T) / m
+            da = np.matmul(W.T, dz)
+            self.__weights['W' + str(i)] -= (alpha * dw)
+            self.__weights['b' + str(i)] -= (alpha * db)
+
+    def train(self, X, Y, iterations=5000, alpha=0.05):
+        """ Train the deep neural network
+
+        Args:
+            X (_type_): _description_
+            Y (_type_): _description_
+            iterations (int, optional): _description_. Defaults to 5000.
+            alpha (float, optional): _description_. Defaults to 0.05.
+
+        Raises:
+            TypeError: _description_
+            ValueError: _description_
+            TypeError: _description_
+            ValueError: _description_
+
+        Returns:
+            _type_: _description_
+        """
+
+        if not isinstance(iterations, int):
+            raise TypeError('iterations must be an integer')
+        if iterations < 1:
+            raise ValueError('iterations must be a positive integer')
+        if not isinstance(alpha, float):
+            raise TypeError('alpha must be a float')
+        if alpha < 0:
+            raise ValueError('alpha must be positive')
+
+        for i in range(iterations):
+            self.forward_prop(X)
+            self.gradient_descent(Y, self.cache, alpha)
+        return self.evaluate(X, Y)
