@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-""" Deep Neural Network
-"""
+""" Deep Neural Network """
 
 import numpy as np
 
@@ -48,15 +47,14 @@ class DeepNeuralNetwork:
             # Zero initialization
             self.__weights['b' + str(i + 1)] = np.zeros((layers[i], 1))
 
-    # add getter method
     @property
     def L(self):
-        """ Return layers in the neural network"""
+        """ Return layers in the neural network """
         return self.__L
 
     @property
     def cache(self):
-        """ Return dictionary with intermediate values of the network"""
+        """ Return dictionary with intermediate values of the network """
         return self.__cache
 
     @property
@@ -69,21 +67,16 @@ class DeepNeuralNetwork:
 
         Args:
             X (numpy.array): Input array with
-            shape (nx, m) = (featurs, no of examples)
+            shape (nx, m) = (features, no of examples)
         """
-        self.cache["A0"] = X
-        # print(self.cache)
-        for i in range(1, self.L+1):
-            # extract values
-            W = self.weights['W'+str(i)]
-            b = self.weights['b'+str(i)]
-            A = self.cache['A'+str(i - 1)]
-            # do forward propagation
-            z = np.matmul(W, A) + b
-            sigmoid = 1 / (1 + np.exp(-z))  # this is the output
-            # store output to the cache
-            self.cache["A"+str(i)] = sigmoid
-        return self.cache["A"+str(i)], self.cache
+        self.__cache["A0"] = X
+        for i in range(1, self.L + 1):
+            W = self.weights['W' + str(i)]
+            b = self.weights['b' + str(i)]
+            A_prev = self.cache['A' + str(i - 1)]
+            Z = np.matmul(W, A_prev) + b
+            self.__cache["A" + str(i)] = 1 / (1 + np.exp(-Z))
+        return self.cache["A" + str(self.L)], self.cache
 
     def cost(self, Y, A):
         """ Calculate the cost of the Neural Network.
@@ -93,8 +86,23 @@ class DeepNeuralNetwork:
             A (numpy.array): predicted values of the neural network
 
         Returns:
-            _type_: _description_
+            cost (float): the cost of the predictions
         """
-        loss = -(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
-        cost = np.mean(loss)
+        m = Y.shape[1]
+        cost = -(1 / m) * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
         return cost
+
+    def evaluate(self, X, Y):
+        """ Evaluates the neural network's predictions
+
+        Args:
+            X (numpy.ndarray): Input data with shape (nx, m)
+            Y (numpy.ndarray): Correct labels with shape (1, m)
+
+        Returns:
+            tuple: Predicted labels and the cost of the network
+        """
+        A, _ = self.forward_prop(X)
+        cost = self.cost(Y, A)
+        predictions = np.where(A >= 0.5, 1, 0)
+        return predictions, cost
