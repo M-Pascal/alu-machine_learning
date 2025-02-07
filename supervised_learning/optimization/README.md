@@ -1,0 +1,1 @@
+```Optimization``` in machine learning (ML) is the process of improving a model's accuracy by adjusting its parameters.
