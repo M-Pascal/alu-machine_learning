@@ -7,21 +7,16 @@ if __name__ == '__main__':
     """pipeline api"""
     url = "https://api.spacexdata.com/v5/launches"
     r = requests.get(url)
-    rocket_dict = {}
+    rocket_dict = {"5e9d0d95eda69955f709d1eb": 0}
 
     for launch in r.json():
-        rocket_id = launch["rocket"]
-        if rocket_id in rocket_dict:
-            rocket_dict[rocket_id] += 1
+        if launch["rocket"] in rocket_dict:
+            rocket_dict[launch["rocket"]] += 1
         else:
-            rocket_dict[rocket_id] = 1
-
-    # Fetch rocket names and print results
-    for key, value in sorted(rocket_dict.items(), key=lambda kv: kv[1], reverse=True):
+            rocket_dict[launch["rocket"]] = 1
+    for key, value in sorted(rocket_dict.items(),
+                             key=lambda kv: kv[1], reverse=True):
         rurl = "https://api.spacexdata.com/v5/rockets/" + key
         req = requests.get(rurl)
-        rocket_name = req.json().get("name", "Not Found")
-        print(f"{rocket_name}: {value}")
 
-    # Additional output
-    print("Today is Saturday, March 1, 2025 and here are the results:")
+        print(req.json()["name"] + ": " + str(value))
