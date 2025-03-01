@@ -1,31 +1,29 @@
 #!/usr/bin/env python3
-"""Pipeline Api"""
+"""
+Uses the (unofficial) SpaceX API to print the number of launches per rocket as:
+<rocket name>: <number of launches>
+ordered by the number of launches in descending order or,
+if rockets have the same amount of launches, in alphabetical order
+"""
+
+
 import requests
-from datetime import datetime
 
 
-if __name__ == '__main__':
-    """pipeline api"""
-    url = "https://api.spacexdata.com/v4/launches/upcoming"
-    r = requests.get(url)
-    recent = 0
-
-    for dic in r.json():
-        new = int(dic["date_unix"])
-        if recent == 0 or new < recent:
-            recent = new
-            launch_name = dic["name"]
-            date = dic["date_local"]
-            rocket_number = dic["rocket"]
-            launch_number = dic["launchpad"]
-
-    rurl = "https://api.spacexdata.com/v4/rockets/" + rocket_number
-    rocket_name = requests.get(rurl).json()["name"]
-    lurl = "https://api.spacexdata.com/v4/launchpads/" + launch_number
-    launchpad = requests.get(lurl)
-    launchpad_name = launchpad.json()["name"]
-    launchpad_local = launchpad.json()["locality"]
-    string = "{} ({}) {} - {} ({})".format(launch_name, date, rocket_name,
-                                           launchpad_name, launchpad_local)
-
-    print(string)
+if __name__ == "__main__":
+    url = 'https://api.spacexdata.com/v4/launches'
+    results = requests.get(url).json()
+    rocketDict = {}
+    for launch in results:
+        rocket = launch.get('rocket')
+        url = 'https://api.spacexdata.com/v4/rockets/{}'.format(rocket)
+        results = requests.get(url).json()
+        rocket = results.get('name')
+        if rocketDict.get(rocket) is None:
+            rocketDict[rocket] = 1
+        else:
+            rocketDict[rocket] += 1
+    rocketList = sorted(rocketDict.items(), key=lambda kv: kv[0])
+    rocketList = sorted(rocketList, key=lambda kv: kv[1], reverse=True)
+    for rocket in rocketList:
+        print("{}: {}".format(rocket[0], rocket[1]))
