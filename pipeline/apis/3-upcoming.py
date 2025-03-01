@@ -6,7 +6,7 @@ from datetime import datetime
 
 if __name__ == '__main__':
     """pipeline api"""
-    url = "https://api.spacexdata.com/v4/launches/upcoming"
+    url = "https://api.spacexdata.com/v5/launches/upcoming"
     r = requests.get(url)
     recent = 0
 
@@ -19,9 +19,9 @@ if __name__ == '__main__':
             rocket_number = dic["rocket"]
             launch_number = dic["launchpad"]
 
-    rurl = "https://api.spacexdata.com/v4/rockets/" + rocket_number
+    rurl = "https://api.spacexdata.com/v5/rockets/" + rocket_number
     rocket_name = requests.get(rurl).json()["name"]
-    lurl = "https://api.spacexdata.com/v4/launchpads/" + launch_number
+    lurl = "https://api.spacexdata.com/v5/launchpads/" + launch_number
     launchpad = requests.get(lurl)
     launchpad_name = launchpad.json()["name"]
     launchpad_local = launchpad.json()["locality"]
