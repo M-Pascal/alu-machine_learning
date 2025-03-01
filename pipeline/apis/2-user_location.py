@@ -24,7 +24,7 @@ def get_user_location(api_url):
         if response.status_code == 403:  # Rate limit exceeded
             reset_time = int(response.headers.get('X-Ratelimit-Reset', 0))
             wait_minutes = round((reset_time - time.time()) / 60)
-            print(f'Reset in {wait_minutes} min')
+            print("Reset in {} min".format(wait_minutes))  # Fix: Used `.format()` instead of f-string
             return
         
         data = response.json()
