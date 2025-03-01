@@ -19,7 +19,11 @@ import time
 
 
 def get_user_location(api_url):
-    """Fetches and prints the location of a GitHub user using the GitHub API."""
+    """
+    Fetches and prints the location of a
+    GitHub user using the GitHub API.
+    """
+    
     try:
         response = requests.get(api_url, timeout=10)
 
