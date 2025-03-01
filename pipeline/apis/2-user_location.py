@@ -10,7 +10,7 @@ Example:
 
 - Prints the user's location if found.
 - Prints 'Not found' if the user doesn't exist.
-- If the API rate limit is exceeded (403 status), prints the time until reset.
+- If the API rate limit is exceeded (403 status),prints the time until reset.
 """
 
 import requests
@@ -24,7 +24,8 @@ def get_user_location(api_url):
         if response.status_code == 403:  # Rate limit exceeded
             reset_time = int(response.headers.get('X-Ratelimit-Reset', 0))
             wait_minutes = round((reset_time - time.time()) / 60)
-            print("Reset in {} min".format(wait_minutes))  # Fix: Used `.format()` instead of f-string
+            # Fix: Used `.format()` instead of f-string
+            print("Reset in {} min".format(wait_minutes))
             return
         
         data = response.json()
