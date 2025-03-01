@@ -1,37 +1,41 @@
 #!/usr/bin/env python3
 """
-Uses the GitHub API to print the location of a specific user,
-where user is passed as first argument of the script with full API URL
+Fetches and prints the location of a GitHub user using the GitHub API.
 
-ex) "./2-user_location.py https://api.github.com/users/holbertonschool"
+Usage:
+    ./2-user_location.py <GitHub API User URL>
+
+Example:
+    ./2-user_location.py https://api.github.com/users/holbertonschool
+
+- Prints the user's location if found.
+- Prints 'Not found' if the user doesn't exist.
+- If the API rate limit is exceeded (403 status), prints the time until reset.
 """
 
-
 import requests
-from sys import argv
-from time import time
+import sys
+import time
 
+def get_user_location(api_url):
+    try:
+        response = requests.get(api_url)
+        
+        if response.status_code == 403:  # Rate limit exceeded
+            reset_time = int(response.headers.get('X-Ratelimit-Reset', 0))
+            wait_minutes = round((reset_time - time.time()) / 60)
+            print(f'Reset in {wait_minutes} min')
+            return
+        
+        data = response.json()
+        print(data.get('location', 'Not found'))
+        
+    except requests.RequestException:
+        print('Not found')
 
 if __name__ == "__main__":
-    if len(argv) < 2:
-        raise TypeError(
-            "Input full API URL passed in as an argument: {}{}".
-            format('ex. "./2-user_location.py',
-                   'https://api.github.com/users/holbertonschool"'))
-    try:
-        url = argv[1]
-        results = requests.get(url)
-        if results.status_code == 403:
-            reset = results.headers.get('X-Ratelimit-Reset')
-            waitTime = int(reset) - time()
-            minutes = round(waitTime / 60)
-            print('Reset in {} min'.format(minutes))
-        else:
-            results = results.json()
-            location = results.get('location')
-            if location:
-                print(location)
-            else:
-                print('Not found')
-    except Exception as err:
-        print('Not found')
+    if len(sys.argv) != 2:
+        print("Usage: ./2-user_location.py <GitHub API User URL>")
+        sys.exit(1)
+    
+    get_user_location(sys.argv[1])
