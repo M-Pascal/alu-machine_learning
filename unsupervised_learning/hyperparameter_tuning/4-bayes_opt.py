@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 """
-4. Bayesian Optimization - Acquisition
+Bayesian optimization
 """
+
+
 import numpy as np
 from scipy.stats import norm
 GP = __import__('2-gp').GaussianProcess
@@ -9,57 +11,46 @@ GP = __import__('2-gp').GaussianProcess
 
 class BayesianOptimization:
     """
-    Performs Bayesian optimization on a noiseless 1D Gaussian process
+    Bayesian optimization on a noiseless 1D Gaussian process
     """
-
-    def __init__(self, f, X_init, Y_init, bounds, ac_samples, l=1,
-                 sigma_f=1, xsi=0.01, minimize=True):
+    def __init__(self, f, X_init, Y_init, bounds, ac_samples, l=1, sigma_f=1,
+                 xsi=0.01, minimize=True):
         """
-        Class constructor
-        Args:
-            f: black-box function to be optimized
-            X_init: np.ndarray - (t, 1) - inputs already sampled with the
-                black-box function
-            Y_init: np.ndarray - (t, 1) - outputs of the black-box function
-                for each input in X_init
-            bounds: tuple (min, max) - bounds of the space in which to look
-                for the optimal point
-            ac_samples: number of samples that should be analyzed during
-                acquisition
-            l: length parameter for the kernel
-            sigma_f: standard deviation given to the output of the
-                black-box function
-            xsi: exploration-exploitation factor for acquisition
-            minimize: bool determining whether optimization should be
-                performed for minimization (True) or maximization (False)
+        init method for bayesian optimization
         """
-        MIN, MAX = bounds
-
+        # black-box function
         self.f = f
-        self.gp = GP(X_init, Y_init, l=l, sigma_f=sigma_f)
-        self.X_s = np.linspace(MIN, MAX, num=ac_samples)[..., np.newaxis]
+        # Gaussian Process
+        self.gp = GP(X_init, Y_init, l, sigma_f)
+        # X_s all acquisition sample
+        X_s = np.linspace(bounds[0], bounds[1], num=ac_samples)
+        self.X_s = X_s.reshape(-1, 1)
+        # exploration-explotation
         self.xsi = xsi
+        # minimization versus maximization
         self.minimize = minimize
 
     def acquisition(self):
         """
-        Calculates the next best sample location
-        Uses the Expected Improvement acquisition function
-        Returns: X_next, EI
+        Next best sample location method
+        Returns:
         """
-        mu, _ = self.gp.predict(self.gp.X)
-        sample_mu, sigma = self.gp.predict(self.X_s)
-
-        if self.minimize:
-            opt_mu = np.min(mu)
+        # source: http://krasserm.github.io/2018/03/21/bayesian-optimization/
+        mu, sigma = self.gp.predict(self.X_s)
+        if self.minimize is True:
+            Y_sample = np.min(self.gp.Y)
+            imp = Y_sample - mu - self.xsi
         else:
-            opt_mu = np.max(mu)
-
-        imp = opt_mu - sample_mu - self.xsi
-        Z = imp / sigma
-        EI = ((imp * norm.cdf(Z)) + (sigma * norm.pdf(Z)))
-        EI[sigma == 0.0] = 0.0
-
-        X_next = self.X_s[np.argmax(EI)]
-
-        return X_next, np.array(EI)
+            Y_sample = np.max(self.gp.Y)
+            imp = mu - Y_sample - self.xsi
+        Z = np.zeros(sigma.shape[0])
+        for i in range(sigma.shape[0]):
+            # formula if σ(x)>0 : μ(x)−f(x+)−ξ / σ(x)
+            if sigma[i] > 0:
+                Z[i] = imp[i] / sigma[i]
+            # formula if σ(x)=0
+            else:
+                Z[i] = 0
+            ei = imp * norm.cdf(Z) + sigma * norm.pdf(Z)
+        X_next = self.X_s[np.argmax(ei)]
+        return X_next, ei
